@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #landen-lijst
+        {
+            width: 450px;
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+    <script>
+
+        var countriesData = null;
+
+        function getData()
+        {
+            $.getJSON('https://restcountries.com/v3.1/all', showData)    
+        }
+        
+        function showData(countries)
+        {
+            if (countriesData == null)
+                countriesData = countries;
+
+            var list = document.getElementById('landen-lijst');
+            list.innerHTML = ''; 
+
+            for (var c of countries)
+            {
+                var option = document.createElement('option');
+                option.innerHTML = c.name.official;
+                document.getElementById('landen-lijst').append(option);
+            }   
+
+            // var myData = {
+            //     Land: c.name.official,
+            //     Hoofdstad: c.capital,
+            // };
+            
+            // localStorage.Land = JSON.stringify(myData);
+            // console.log(c.capital)
+        }
+
+        function saveData()
+        {
+            var gekozenLand = document.getElementById('landen-lijst').value;
+            var results = countriesData.filter(c => c.name.official === gekozenLand);
+
+            showData(results);
+            // console.log(results);
+        }
+
+        function searchCountries()
+        {
+            var text = document.getElementById('zoek-land').value;
+            var results = countriesData.filter(c => c.name.official.toLowerCase().includes(text.toLowerCase()));
+            showData(results);
+            // console.log(results);
+        }
+
+        // {
+        //     var gekozenLand = document.getElementById('landen-lijst').value;
+        //     // var hoofdstad = countriesData.filter(l => l.name.official == gekozenLand)
+
+
+
+        //     // if (l.name.official === gekozenLand)
+        //     //     console.log(l.name.capital);
+            
+
+
+
+        //     localStorage.Land = JSON.stringify(data);
+        // }
+
+        // function testData()
+        // {
+        //     var gekozenLand = document.getElementById('landen-lijst').value;
+
+        //     console.log(countriesData.capital);
+        // }
+
+
+    </script>
+</head>
+
+<body onload="getData();">
+    <h1>Hier onder wil ik alle landen laden!</h1>
+
+    <select name="" id="landen-lijst"></select>
+    <br><br>
+    <button onclick="saveData();">Opslaan in local storage</button>
+    <button onclick="testData();">Test!</button>
+    <input type="text" id="zoek-land" onkeyup="searchCountries();">
+    
+</body>
+</html>
