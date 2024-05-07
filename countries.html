@@ -52,14 +52,39 @@
             var gekozenLand = document.getElementById('landen-lijst').value;
             var results = countriesData.filter(c => c.name.official === gekozenLand);
 
-            showData(results);
-            // console.log(results);
+            // (XW) Dit niet, want showData verwacht de lijst van landen zoals je in searchCountries doet 
+            //showData(results);
+            
+            // (XW) Dit mag natuurlijk wel:
+            console.log(results);
+
+            // (XW) results is een array, al weten we dat er maar 1 land in zit. 
+            // Maar je moet wel de index [0] erbij zetten.
+            console.log(results[0].capital);
+
+            // Maak voor het gemak een nieuwe variabele c aan om de rest van de code wat korter te maken
+            var c = results[0];
+
+            // Dit komt van de functie hierboven
+            var myData = {
+                Land: c.name.official,
+                Hoofdstad: c.capital,
+            };
+            
+            localStorage.Land = JSON.stringify(myData);
+
+            console.log(myData);
+
+            // (XW) Let er tenslotte nog op dat de capital property een array is! 
+            // Er zijn landen met meerdere hoofdsteden, bv Zuid-Afrika en Palestina
+            // En Antarctica heeft dan weer geen hoofdstad
         }
 
         function searchCountries()
         {
             var text = document.getElementById('zoek-land').value;
             var results = countriesData.filter(c => c.name.official.toLowerCase().includes(text.toLowerCase()));
+            console.log(results);
             showData(results);
             // console.log(results);
         }
